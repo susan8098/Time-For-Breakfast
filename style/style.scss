@@ -1,0 +1,194 @@
+
+$yelloww: #FFAC1E;
+$redd: #D62828;
+
+$baseFont: 'Comfortaa', sans-serif;
+
+@import "setup";
+
+html {
+	font-size: 62.5%;
+
+}
+
+body {
+	font-size: 15px;
+	font-size: 1.5em;
+	background: none;
+	font-family: $baseFont;
+}
+
+.wrapper {
+	max-width: 1080px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+h1 {
+	font-size: 8rem;
+	font-weight: 700;
+	text-align: center;
+}
+
+h1.spinSun {
+	margin: 0;
+	font-size: 9rem;
+}
+
+h2 {
+	text-align: center;
+	font-size: 2rem;
+}
+
+a {
+	text-decoration: none;
+	color: $yelloww;
+}
+
+i {
+	margin: 0 3px;
+}
+
+header, #load {
+	background: url(../images/brunch.jpeg);
+	background-size: cover;
+	height: 100vh;
+	
+	.color {
+		height: 100vh;
+		display: flex;
+		flex-flow: column wrap;
+		justify-content: center;
+		background-color: rgba($yelloww, 0.9);
+
+		h1 {
+			margin: 0px auto 30px auto;
+			color: white;
+		}
+	}
+}
+
+// Load Screen
+#load {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100vh;
+
+	h1.hide, form {
+		opacity: 0;
+	}
+}
+
+
+form {
+	width: 100%;
+
+	.submitButton {
+		
+		margin: 0 auto;
+		display: flex;
+
+		input {
+			margin: auto;
+			padding: 20px 40px;
+			background-color: rgba($yelloww, 0.1);
+			border: 3px solid white;
+			color: white;
+			font-size: 2rem;
+			font-weight: 400;
+			border-radius: 5px;
+			letter-spacing: 1.2px;
+			transition: all .3s;
+
+			&:hover {
+				background-color: white;
+				color: $yelloww;
+			}
+			
+		}
+	}
+}
+
+
+div#placeIn {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+}
+
+a.placeUrl {
+	display: inline-block;
+	width: 32%;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.placeContainers {
+	border-radius: 5px;
+	color: black;
+	padding: 20px;
+	transition: all .3s;
+
+	img {
+		width: 100%;
+	}
+
+	&:hover {
+		background-color: $yelloww;
+		color: white;
+	}
+}
+
+#map {
+	width: 100%;
+	height: 400px;
+}
+
+
+
+footer {
+	text-align: center;
+	background-color: black;
+	color: lightgrey;
+	padding: 10px;
+	font-weight: 300;
+	font-size: 1.1rem;
+	letter-spacing: 1.5px;
+	
+	p {
+		margin: 0;
+	}
+	
+	a {
+		color: lightgrey;
+	}
+}
+
+
+@media (max-width: 850px) {
+	a.placeUrl {
+		width: 50%;
+	}
+}
+
+@media (max-width: 530px) {
+	a.placeUrl {
+		width: 100%;
+	}
+
+	h1 {
+		font-size: 6rem;
+	}
+
+	form .submitButton input {
+		padding: 10px 25px;
+	}
+}
+
+
+
+
