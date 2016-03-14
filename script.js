@@ -31,6 +31,22 @@ $(function() {
 
 });
 
+// get users date & time
+// store users date & time in a variable
+// store desired hours in a variable 
+// if users date & time is NOT between the hours variable, 
+// then prompt a message that says "it's not breakfast time at the moment!"
+
+var userDate = new Date();
+console.log(userDate);
+
+var userHours = userDate.getHours();
+console.log(userHours);
+
+var userMinutes = userDate.getMinutes();
+console.log(userMinutes);
+
+var dimsumwhere = '<a href="http://dimsumwhere.com/">Dimsum</a>';
 
 
 app.init = function() {
@@ -38,27 +54,38 @@ app.init = function() {
 	$('.start').on('submit', function(e) {
 		e.preventDefault();
 
-		$('#placeIn').html('<div id="load"><div class="color"><h1 class="spinSun"><i class="fa fa-sun-o fa-spin"></i></h1><h1 class="hide">Time for Brunch!</h1><form class="start"><div class="submitButton"><input type="submit" value="Search brunch near me"></div></form></div></div>');
 
-		// getting geolocation from user
-		navigator.geolocation.getCurrentPosition(function(position){
-			app.lat = position.coords.latitude;
-			app.long = position.coords.longitude;
-			console.log(app.lat, app.long);
+		// Set Time limitation
+		if( userHours >= 5 &&  userHours <= 16 ) {
+			console.log('it still breakfast time');
+
+			$('#placeIn').html('<div id="load"><div class="color"><h1 class="spinSun"><i class="fa fa-sun-o fa-spin"></i></h1><h1 class="hide">Time for Brunch!</h1><form class="start"><div class="submitButton"><input type="submit" value="Search brunch near me"></div></form></div></div>');
+
+			// getting geolocation from user
+			navigator.geolocation.getCurrentPosition(function(position){
+				app.lat = position.coords.latitude;
+				app.long = position.coords.longitude;
+				console.log(app.lat, app.long);
+				
+				// calling the parameters from map
+				initMap(app.lat, app.long);
+
+				// call to search from foursquare
+				app.getBrunchLocations()
+
+				// show places section and map div when search
+				$('.places').show();
+				$('#map').show();
+			})
+		} else { // Not Breakfast Time!
+			console.log('breakfast time has passed!');
+
+			// no breakfast message
+			$('.title').html("<h2>It's passed breakfast time!</h2> <h3> maybe try again in the morning?</h3>");
+			$('form').hide();
+
+		}
 			
-			// calling the parameters from map
-			initMap(app.lat, app.long);
-
-			// call to search from foursquare
-			app.getBrunchLocations()
-		})
-
-
-		// show places section and map div when search
-		$('.places').show();
-		$('#map').show();
-
-
 	}); // end of submit function
 }
 
@@ -101,7 +128,7 @@ app.displayLocations = function(object) {
 	$.each(object, function(i, place) {
 
 		// Name of the place
-		var placeName = $('<h2>').text(place.venue.name);
+		var placeName = $('<h3>').text(place.venue.name);
 		
 		// variable shortcut to get to photos
 		var photoShort = place.venue.featuredPhotos.items[0];
@@ -110,7 +137,7 @@ app.displayLocations = function(object) {
 		var photo = $('<img>').attr('src', photoShort.prefix + photoShort.height + photoShort.suffix);
 
 		// rating
-		var rating = $('<p>').html('<i class="fa fa-thumbs-up"></i> ' + place.venue.rating);
+		var rating = $('<p>').addClass('rating').html('<i class="fa fa-thumbs-up"></i> ' + place.venue.rating);
 
 		// container Div
 		var containerDiv = $('<div>').addClass('placeContainers').append(placeName, photo, rating);
@@ -127,7 +154,7 @@ app.displayLocations = function(object) {
 			$('#placeIn').append(placeContainers);
 
 			// content inside marker
-			var markerContent = '<h2>' + place.venue.name + '</h2>' + '<p> You are ' + place.venue.location.distance + 'm away </p>';
+			var markerContent = '<h3>' + place.venue.name + '</h3>' + '<p> You are ' + place.venue.location.distance + 'm away </p>';
 
 			// marker info window
 			var infowindow = new google.maps.InfoWindow({
@@ -145,6 +172,12 @@ app.displayLocations = function(object) {
 			marker.addListener('click', function() {
 			    infowindow.open(map, marker);
 			});
+		}
+
+		// when rating says "undefined"
+		if(place.venue.rating === 'undefined') {
+			var norating = $('p.rating').append('<p>woops, no reviews available!</p>');
+			console.log('no rating')
 		}
 	});
 }
